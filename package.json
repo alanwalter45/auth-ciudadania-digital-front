@@ -23,5 +23,11 @@
 		"svelte-check": "^4.0.0",
 		"typescript": "^5.0.0",
 		"vite": "^6.2.6"
+	},
+	"dependencies": {
+		"@alanwalter45/tool": "^0.0.6",
+		"@lucide/svelte": "^0.511.0",
+		"@tailwindcss/vite": "^4.1.7",
+		"tailwindcss": "^4.1.7"
 	}
 }
