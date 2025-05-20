@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { KeyRound } from '@lucide/svelte';
 	import { URL } from '$lib/globals';
+	import logo from "$lib/assets/img/ciudadania-digital.png";
 
 	async function getUrlAuthentication(url: string) {
 		const redirect_uri = `${URL}/inicio`;
@@ -13,15 +14,14 @@
 
 <section class="flex justify-center">
 	<div class="flex flex-col items-center p-[6em]">
-		<h1 class="text-2xl uppercase">Autenticación</h1>
 		<img
-			src="src/assets/img/ciudadania-digital.png"
+			src="{logo}"
 			alt="Imagen de ciudadania-digital"
 			class="w-52"
 		/>
 		<button
 			onclick={getUrlAuthentication(URL)}
-			class="bg-gray-600 p-5 text-amber-50 rounded cursor-pointer hover:bg-amber-500 hover:text-black w-sm flex justify-center gap-2"
+			class="bg-gray-600 p-3 text-amber-50 rounded cursor-pointer hover:bg-gray-700 hover:text-orange-100 w-sm flex justify-center gap-2"
 		>
 			<KeyRound /> Ingresar
 		</button>
