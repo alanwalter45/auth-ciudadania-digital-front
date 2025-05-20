@@ -13,6 +13,9 @@
 		if (!code || !state) {
 			throw redirect(302, '/');
 		}
+		console.log(access_token);
+		await getToken(URL_BACKEND, code, state);
+		if (!access_token || !id_token || !refresh_token) throw redirect(302, '/');
 	});
 
 	async function getToken(url: string, code: string, state: string) {
@@ -21,11 +24,10 @@
 			method: 'GET'
 		});
 		const result = await response.json();
-		const data = JSON.stringify(result);
+		//const data = JSON.stringify(result);
 		access_token = result.access_token;
 		id_token = result.id_token;
 		refresh_token = result.refresh_token;
-		alert(data);
 	}
 
 	async function getUserInfo(url: string, token: string) {
@@ -66,13 +68,8 @@
 
 <section class="p-10">
 	<h3 class="text-2xl">Autenticación GADCH</h3>
-	<p class="pt-5">Página para verificar conexión con la API de la AGETIC.</p>
+	<p class="pt-5">Página para verificar conexión con la API - AGETIC.</p>
 	<div class="pt-5"></div>
-	<button
-		on:click={() => getToken(URL_BACKEND, code, state)}
-		class="bg-gray-50 rounded py-1 px-3 border border-black hover:border-amber-600"
-		>Obtener Token</button
-	>
 	<button
 		on:click={() => getUserInfo(URL_BACKEND, access_token)}
 		disabled={!access_token}
