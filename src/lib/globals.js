@@ -1,2 +1,2 @@
-export const URL = 'https://auth.chuquisaca.gob.bo';
-export const URL_BACKEND = 'https://authback.chuquisaca.gob.bo';
+export const URL = 'https://demo.chuquisaca.gob.bo';
+export const URL_BACKEND = 'https://auth.chuquisaca.gob.bo';

@@ -11,6 +11,7 @@
 
 	onMount(async () => {
 		if (!URL_BACKEND || !code || !state) goto('/');
+		console.log(access_token);
 		await getToken(URL_BACKEND, code, state);
 		if (!access_token || !id_token || !refresh_token) goto('/');
 	});
@@ -20,10 +21,15 @@
 		const response = await fetch(`${url}/authorization?code=${code}&state=${state}`, {
 			method: 'GET'
 		});
-		const result = await response.json();
-		access_token = result.access_token;
-		id_token = result.id_token;
-		refresh_token = result.refresh_token;
+		try{
+
+			const result = await response.json();
+			access_token = result.access_token;
+			id_token = result.id_token;
+			refresh_token = result.refresh_token;
+		}catch(_){
+			goto('/');
+		}
 	}
 
 	async function getUserInfo(url: string, token: string) {
@@ -52,7 +58,7 @@
 
 	async function refreshToken(url: string, refreshToken: string) {
 		if (!url || !refreshToken) return;
-		const response = await fetch(`${url}/introspection`, {
+		const response = await fetch(`${url}/refresh-token`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ refresh_token: refreshToken })

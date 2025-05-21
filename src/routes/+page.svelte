@@ -4,7 +4,7 @@
 	import logo from '$lib/assets/img/ciudadania-digital.png';
 
 	async function getUrlAuthentication(url_backend: string) {
-		const redirect_uri = `${url_backend}/inicio`;
+		const redirect_uri = `${url_backend}/welcome`;
 		const response = await fetch(`${url_backend}/authentication?redirect_uri=${redirect_uri}`, {
 			method: 'GET'
 		});
