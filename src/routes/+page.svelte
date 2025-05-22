@@ -14,12 +14,15 @@
 
 <section class="flex justify-center">
 	<div class="flex flex-col items-center p-[6em]">
-		<img src={logo} alt="Imagen de ciudadania-digital" class="w-52" />
+		<img src={logo} alt="Imagen de ciudadania-digital" class="w-48" />
 		<button
 			on:click={() => getUrlAuthentication(URL_BACKEND)}
-			class="bg-green-600 p-3 text-amber-50 rounded cursor-pointer hover:bg-green-700 hover:text-orange-100 w-sm flex justify-center gap-2"
+			class="bg-orange-500 p-3 text-white font-bold rounded cursor-pointer hover:bg-orange-400 hover:text-orange-100 w-xs flex justify-center gap-2"
 		>
 			<KeyRound /> Ingresar
 		</button>
+	</div>
+	<div class="fixed bottom-0 p-2">
+		<p title="Gobierno Autonomo Departamental de Chuquisaca"><span>GADCH</span>@20205</p>
 	</div>
 </section>
