@@ -2,6 +2,7 @@
 	import { KeyRound } from '@lucide/svelte';
 	import { URL_BACKEND } from '$lib/globals';
 	import logo from '$lib/assets/img/ciudadania-digital.png';
+	import { fade } from 'svelte/transition';
 
 	async function getUrlAuthentication(url_backend: string) {
 		const redirect_uri = `${url_backend}/welcome`;
@@ -12,12 +13,12 @@
 	}
 </script>
 
-<section class="flex justify-center">
+<section transition:fade={{ duration: 1000 }} class="flex justify-center">
 	<div class="flex flex-col items-center p-[6em]">
 		<img src={logo} alt="Imagen de ciudadania-digital" class="w-48" />
 		<button
 			on:click={() => getUrlAuthentication(URL_BACKEND)}
-			class="bg-orange-500 p-3 text-white font-bold rounded cursor-pointer hover:bg-orange-400 hover:text-orange-100 w-xs flex justify-center gap-2"
+			class="bg-gray-900 p-3 text-white font-bold rounded cursor-pointer hover:text-green-300 w-xs flex justify-center gap-2"
 		>
 			<KeyRound /> Ingresar
 		</button>
