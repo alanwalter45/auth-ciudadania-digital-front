@@ -18,12 +18,12 @@
 		<img src={logo} alt="Imagen de ciudadania-digital" class="w-48" />
 		<button
 			on:click={() => getUrlAuthentication(URL_BACKEND)}
-			class="bg-gray-900 p-3 text-white font-bold rounded cursor-pointer hover:text-green-300 w-xs flex justify-center gap-2"
+			class="bg-gray-800 p-3 text-white font-bold rounded cursor-pointer hover:text-green-300 hover:bg-black w-xs flex justify-center gap-2"
 		>
 			<KeyRound /> Ingresar
 		</button>
 	</div>
 	<div class="fixed bottom-0 p-2">
-		<p title="Gobierno Autonomo Departamental de Chuquisaca"><span>GADCH</span>@20205</p>
+		<p title="Gobierno Autonomo Departamental de Chuquisaca"><span>GADCH</span>@2025</p>
 	</div>
 </section>
