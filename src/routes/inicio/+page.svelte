@@ -12,6 +12,9 @@
 	let dataResolve = '';
 
 	onMount(async () => {
+		if (getTokenStorage()?.access_token) {
+			return;
+		}
 		if (!URL_BACKEND || !code || !state) goto('/');
 		await getToken(URL_BACKEND, code, state);
 		if (!access_token || !id_token || !refresh_token) goto('/');
@@ -27,6 +30,7 @@
 			access_token = result.access_token;
 			id_token = result.id_token;
 			refresh_token = result.refresh_token;
+			saveTokenStorage({ access_token, id_token, refreshToken });
 		} catch (_) {
 			goto('/');
 		}
@@ -81,28 +85,35 @@
 		const result = await response.text();
 		window.location.href = result;
 	}
+
+	function saveTokenStorage(obj:{}) {
+		localStorage.setItem('token', JSON.stringify(obj));
+	}
+	function getTokenStorage():{} {
+		return JSON.parse(localStorage.getItem('token'));
+	}
 </script>
 
-<section class="p-10">
-	<h3 class="text-2xl">Autenticación GADCH</h3>
-	<p class="pt-5">Inter-operabilidad con la API - AGETIC.</p>
+<section class="p-10 w-full">
+	<h3 class="text-2xl">Autenticación</h3>
+	<p class="pt-5">Operabilidad con la API - AGETIC.</p>
 	<div class="pt-5"></div>
 	<button
 		on:click={() => getUserInfo(URL_BACKEND, access_token)}
 		disabled={!access_token}
-		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer"
+		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer hover:bg-white"
 		>Información de Usuario</button
 	>
 	<button
 		on:click={() => getIntrospection(URL_BACKEND, access_token)}
 		disabled={!access_token}
-		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer"
+		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer hover:bg-white"
 		>Introspección</button
 	>
 	<button
 		on:click={() => refreshToken(URL_BACKEND, refresh_token)}
 		disabled={!refresh_token}
-		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer"
+		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer hover:bg-white"
 		>Refresh Token</button
 	>
 	<button
@@ -112,14 +123,16 @@
 		>Cerrar Sesión</button
 	>
 	<br />
-	{#if dataResolve}
-		<h3 class="mt-6">Respuesta</h3>
-		<div
-			class="whitespace-pre-wrap border bg-amber-50 border-gray-200 rounded-2xl p-3 wrap-break-word"
-		>
-			{@html Prism.highlight(dataResolve, Prism.languages['javascript'])}
-		</div>
-	{/if}
+	<section class="w-full">
+		{#if dataResolve}
+			<h3 class="mt-6">Respuesta</h3>
+			<div
+				class="whitespace-pre-wrap border bg-amber-50 border-gray-200 rounded-2xl p-3 wrap-break-word"
+			>
+				{@html Prism.highlight(dataResolve, Prism.languages['javascript'])}
+			</div>
+		{/if}
+	</section>
 </section>
 
 <svelte:head>

@@ -2,7 +2,7 @@
 	import { KeyRound } from '@lucide/svelte';
 	import { URL_BACKEND } from '$lib/globals';
 	import logo from '$lib/assets/img/ciudadania-digital.png';
-	import { fade } from 'svelte/transition';
+	import { page } from '$app/state';
 
 	async function getUrlAuthentication(url_backend: string) {
 		const redirect_uri = `${url_backend}/welcome`;
@@ -13,17 +13,16 @@
 	}
 </script>
 
-<section transition:fade={{ duration: 1000 }} class="flex justify-center">
-	<div class="flex flex-col items-center p-[6em]">
-		<img src={logo} alt="Imagen de ciudadania-digital" class="w-48" />
-		<button
-			on:click={() => getUrlAuthentication(URL_BACKEND)}
-			class="bg-gray-800 p-3 text-white font-bold rounded cursor-pointer hover:text-green-300 hover:bg-black w-xs flex justify-center gap-2"
-		>
-			<KeyRound /> Ingresar
-		</button>
-	</div>
-	<div class="fixed bottom-0 p-2">
-		<p title="Gobierno Autonomo Departamental de Chuquisaca"><span>GADCH</span>@2025</p>
-	</div>
-</section>
+<div class="flex flex-col items-center p-[6em]">
+	<img src={logo} alt="Imagen de ciudadania-digital" class="w-48" />
+	<button
+		on:click={() => getUrlAuthentication(URL_BACKEND)}
+		class="bg-gray-800 p-3 text-white font-bold rounded cursor-pointer hover:text-white hover:bg-orange-700 w-xs flex justify-center gap-2"
+	>
+		<KeyRound /> Ingresar
+	</button>
+	<a href="/politicas" class="text-blue-950 mt-6 hover:underline">Políticas de privacidad</a>
+</div>
+<div class="fixed bottom-0 p-2">
+	<p title="Gobierno Autonomo Departamental de Chuquisaca"><span>GADCH</span>@2025</p>
+</div>
