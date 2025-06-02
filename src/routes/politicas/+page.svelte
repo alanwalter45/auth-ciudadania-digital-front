@@ -6,5 +6,5 @@
 		voluptatibus laudantium nulla. Iusto, ea earum!
 	</p>
 	<br>
-	<a href="/" class="text-blue-950 bg-blue-50 p-3 rounded-sm" title="Volver al inicio">Inicio</a>
+	<a href="/" class="text-white bg-gray-500 p-3 rounded-sm" title="Volver al inicio">Inicio</a>
 </section>

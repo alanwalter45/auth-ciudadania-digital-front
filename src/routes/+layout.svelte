@@ -1,12 +1,11 @@
 <script>
 	let { children } = $props();
 	import '../app.css';
-	import { fade } from 'svelte/transition';
-	import { page as p } from '$app/stores';
 </script>
 
-{#key $p.url.pathname}
-	<section transition:fade={{ duration: 300 }} class="flex justify-center">
-		{@render children()}
-	</section>
-{/key}
+<section class="flex justify-center">
+	{@render children()}
+	<div class="fixed bottom-0 p-2 bg-white left-0 w-full flex justify-center">
+		<p title="Gobierno Autonomo Departamental de Chuquisaca"><span>GADCH</span>@2025</p>
+	</div>
+</section>
