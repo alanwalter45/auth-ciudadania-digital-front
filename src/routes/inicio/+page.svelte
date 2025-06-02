@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Prism from 'prismjs';
 	import { page } from '$app/stores';
-	import { URL_BACKEND } from '$lib/globals';
+	import { URL_BACKEND, URL_FRONTEND } from '$lib/globals';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	const code: string = $page.url.searchParams.get('code') || '';
@@ -20,15 +20,18 @@
 			return;
 		}
 		if (!URL_BACKEND || !code || !state) goto('/');
-		await getToken(URL_BACKEND, code, state);
+		await getToken(URL_BACKEND, code, state, `${URL_FRONTEND}/inicio`);
 		if (!dataToken.access_token || !dataToken.id_token || !dataToken.refresh_token) goto('/');
 	});
 
-	async function getToken(url: string, code: string, state: string) {
+	async function getToken(url: string, code: string, state: string, redirect_uri: string) {
 		if (!url || !code || !state) return;
-		const response = await fetch(`${url}/authorization?code=${code}&state=${state}`, {
-			method: 'GET'
-		});
+		const response = await fetch(
+			`${url}/authorization?code=${code}&state=${state}&redirect_uri=${redirect_uri}`,
+			{
+				method: 'GET'
+			}
+		);
 		try {
 			const result = await response.json();
 			({
@@ -83,12 +86,12 @@
 		dataResolve = data;
 	}
 
-	async function logout(url: string, id_token: string) {
+	async function logout(url: string, id_token: string, post_logout_redirect_uri: string) {
 		if (!url || !id_token) return;
 		const response = await fetch(`${url}/logout`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ id_token_hint: id_token, post_logout_redirect_uri: `${url}` })
+			body: JSON.stringify({ id_token_hint: id_token, post_logout_redirect_uri })
 		});
 		const result = await response.text();
 		window.location.href = result;
@@ -125,7 +128,7 @@
 		>Refresh Token</button
 	>
 	<button
-		on:click={() => logout(URL_BACKEND, dataToken.id_token)}
+		on:click={() => logout(URL_BACKEND, dataToken.id_token, URL_FRONTEND)}
 		disabled={!dataToken.id_token}
 		class="bg-red-500 rounded py-1 px-3 border text-white border-black hover:bg-red-600 disabled:text-gray-300 disabled:bg-red-200 cursor-pointer"
 		>Cerrar Sesión</button

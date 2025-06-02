@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { KeyRound } from '@lucide/svelte';
-	import { URL_BACKEND } from '$lib/globals';
+	import { URL_BACKEND, URL_FRONTEND } from '$lib/globals';
 	import logo from '$lib/assets/img/ciudadania-digital.png';
 
-	async function getUrlAuthentication(url_backend: string) {
-		const redirect_uri = `${url_backend}/welcome`;
+	async function getUrlAuthentication(url_backend: string, redirect_uri: string) {
 		const response = await fetch(`${url_backend}/authentication?redirect_uri=${redirect_uri}`, {
 			method: 'GET'
 		});
@@ -15,7 +14,7 @@
 <div class="flex flex-col items-center p-[6em]">
 	<img src={logo} alt="Imagen de ciudadania-digital" class="w-48" />
 	<button
-		on:click={() => getUrlAuthentication(URL_BACKEND)}
+		on:click={() => getUrlAuthentication(URL_BACKEND,`${URL_FRONTEND}/inicio`)}
 		class="bg-gray-800 p-3 text-white font-bold rounded cursor-pointer hover:text-white hover:bg-orange-600 w-xs flex justify-center gap-2"
 	>
 		<KeyRound /> Ingresar
