@@ -94,6 +94,7 @@
 			body: JSON.stringify({ id_token_hint: id_token, post_logout_redirect_uri })
 		});
 		const result = await response.text();
+		localStorage.clear();
 		window.location.href = result;
 	}
 

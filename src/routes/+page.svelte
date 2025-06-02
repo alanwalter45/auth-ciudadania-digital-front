@@ -7,6 +7,7 @@
 		const response = await fetch(`${url_backend}/authentication?redirect_uri=${redirect_uri}`, {
 			method: 'GET'
 		});
+		localStorage.clear();
 		window.location.href = await response.text();
 	}
 </script>
