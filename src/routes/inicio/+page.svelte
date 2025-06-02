@@ -6,18 +6,22 @@
 	import { onMount } from 'svelte';
 	const code: string = $page.url.searchParams.get('code') || '';
 	const state: string = $page.url.searchParams.get('state') || '';
-	let access_token = '';
-	let refresh_token = '';
-	let id_token = '';
+	let dataToken = { access_token: '', refresh_token: '', id_token: '' };
 	let dataResolve = '';
 
 	onMount(async () => {
-		if (getTokenStorage()?.access_token) {
+		const tokenStorage: any = getTokenStorage();
+		if (tokenStorage?.access_token) {
+			({
+				access_token: dataToken.access_token,
+				id_token: dataToken.id_token,
+				refresh_token: dataToken.refresh_token
+			} = tokenStorage);
 			return;
 		}
 		if (!URL_BACKEND || !code || !state) goto('/');
 		await getToken(URL_BACKEND, code, state);
-		if (!access_token || !id_token || !refresh_token) goto('/');
+		if (!dataToken.access_token || !dataToken.id_token || !dataToken.refresh_token) goto('/');
 	});
 
 	async function getToken(url: string, code: string, state: string) {
@@ -27,10 +31,12 @@
 		});
 		try {
 			const result = await response.json();
-			access_token = result.access_token;
-			id_token = result.id_token;
-			refresh_token = result.refresh_token;
-			saveTokenStorage({ access_token, id_token, refreshToken });
+			({
+				access_token: dataToken.access_token,
+				id_token: dataToken.id_token,
+				refresh_token: dataToken.refresh_token
+			} = result);
+			saveTokenStorage(dataToken);
 		} catch (_) {
 			goto('/');
 		}
@@ -68,9 +74,11 @@
 			body: JSON.stringify({ refresh_token: refreshToken })
 		});
 		const result = await response.json();
-		access_token = result.access_token;
-		id_token = result.id_token;
-		refresh_token = result.refresh_token;
+		({
+			access_token: dataToken.access_token,
+			id_token: dataToken.id_token,
+			refresh_token: dataToken.refresh_token
+		} = result);
 		const data = JSON.stringify(result);
 		dataResolve = data;
 	}
@@ -86,11 +94,11 @@
 		window.location.href = result;
 	}
 
-	function saveTokenStorage(obj:{}) {
+	function saveTokenStorage(obj: {}) {
 		localStorage.setItem('token', JSON.stringify(obj));
 	}
-	function getTokenStorage():{} {
-		return JSON.parse(localStorage.getItem('token'));
+	function getTokenStorage(): {} {
+		return JSON.parse(localStorage.getItem('token') || '{}');
 	}
 </script>
 
@@ -99,26 +107,26 @@
 	<p class="pt-5">Operabilidad con la API - AGETIC.</p>
 	<div class="pt-5"></div>
 	<button
-		on:click={() => getUserInfo(URL_BACKEND, access_token)}
-		disabled={!access_token}
+		on:click={() => getUserInfo(URL_BACKEND, dataToken.access_token)}
+		disabled={!dataToken.access_token}
 		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer hover:bg-white"
 		>Información de Usuario</button
 	>
 	<button
-		on:click={() => getIntrospection(URL_BACKEND, access_token)}
-		disabled={!access_token}
+		on:click={() => getIntrospection(URL_BACKEND, dataToken.access_token)}
+		disabled={!dataToken.access_token}
 		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer hover:bg-white"
 		>Introspección</button
 	>
 	<button
-		on:click={() => refreshToken(URL_BACKEND, refresh_token)}
-		disabled={!refresh_token}
+		on:click={() => refreshToken(URL_BACKEND, dataToken.refresh_token)}
+		disabled={!dataToken.refresh_token}
 		class="bg-gray-50 rounded py-1 px-3 border border-black active:hover:bg-amber-600 disabled:text-gray-300 cursor-pointer hover:bg-white"
 		>Refresh Token</button
 	>
 	<button
-		on:click={() => logout(URL_BACKEND, id_token)}
-		disabled={!id_token}
+		on:click={() => logout(URL_BACKEND, dataToken.id_token)}
+		disabled={!dataToken.id_token}
 		class="bg-red-500 rounded py-1 px-3 border text-white border-black hover:bg-red-600 disabled:text-gray-300 disabled:bg-red-200 cursor-pointer"
 		>Cerrar Sesión</button
 	>
